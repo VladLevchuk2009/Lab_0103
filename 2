@@ -1,0 +1,83 @@
+public class User
+{
+    protected string name;
+    protected int age;
+
+    public void setName(string name)
+    {
+        this.name = name;
+    }
+    public void setAge(int age)
+    {
+        this.age = age;
+    }
+
+    public string getName()
+    {
+        return name;
+    }
+    public int getAge()
+    {
+        return age;
+    }
+}
+
+public class Worker : User
+{
+    private int salary;
+
+    public void setSalary(int salary)
+    {
+        this.salary = salary;
+    }
+
+    public int getSalary()
+    {
+        return salary;
+    }
+}
+
+public class Student : User
+{
+    private int scholarship;
+    private int course;
+
+    public int Scholarship
+    {
+        get { return scholarship; }
+        set { scholarship = value; }
+    }
+    public int Course
+    {
+        get { return course; }
+        set { course = value; }
+    }
+}
+
+public class Driver : Worker
+{
+
+    private int drivingExperience;
+    private bool drivingCategoryA;
+    private bool drivingCategoryB;
+    private bool drivingCategoryC;
+}
+
+    class Program
+{
+    static void Main(string[] args)
+    {
+        Worker worker1 = new Worker();
+        worker1.setName("Іван");
+        worker1.setAge(25);
+        worker1.setSalary(1000);
+
+        Worker worker2 = new Worker();
+        worker2.setName("Вася");
+        worker2.setAge(26);
+        worker2.setSalary(2000);
+
+        int Salary = worker1.getSalary() + worker2.getSalary();
+        Console.WriteLine($"Запрлата для працівників: {Salary}");
+    }
+}
