@@ -1,0 +1,131 @@
+class Worker
+{
+    protected string surname;
+    protected double salary;
+    protected DateTime hireDate;
+
+    public Worker()
+    {
+        surname = "Surname";
+        salary = 0;
+        hireDate = DateTime.Today;
+    }
+
+    public Worker(string surname, double salary, DateTime hireDate)
+    {
+        this.surname = surname;
+        this.salary = salary;
+        this.hireDate = hireDate;
+    }
+
+    public string Surname
+    {
+        get { return surname; }
+        set { surname = value; }
+    }
+
+    public double Salary
+    {
+        get { return salary; }
+        set { salary = value; }
+    }
+
+    public DateTime HireDate
+    {
+        get { return hireDate; }
+        set { hireDate = value.Date; }
+    }
+
+    public int GetWorkingYears()
+    {
+        int yearsOfWork = DateTime.Today.Year - hireDate.Year;
+        if (DateTime.Today.Month < hireDate.Month || (DateTime.Today.Month == hireDate.Month && DateTime.Today.Day < hireDate.Day))
+            yearsOfWork--;
+        return yearsOfWork;
+    }
+
+    public int GetWorkingDays()
+    {
+        int workingDays = 0;
+        for (DateTime date = hireDate; date <= DateTime.Today; date = date.AddDays(1))
+            workingDays++;
+        return workingDays;
+    }
+
+    public override string ToString()
+    {
+        return $"{Surname}\t{salary}\t{hireDate}";
+    }
+}
+
+class WorkerOfEnterprice : Worker 
+{
+    DateTime birthDate;
+
+    public WorkerOfEnterprice(string surname, double salary, DateTime hireDate, DateTime birthDate)
+    {
+        this.surname = surname;
+        this.salary = salary;
+        this.hireDate = hireDate;
+        this.birthDate = birthDate;
+    }
+
+    public int Year60()
+    {
+        int age = DateTime.Today.Year - birthDate.Year;
+        int age60 = birthDate.Year + 60;
+        if (age >= 60)
+        {
+            if (age60 >= hireDate.Year)
+                return DateTime.Today.Year - age60;
+            else if (age60 < hireDate.Year)
+                return DateTime.Today.Year - hireDate.Year;
+            else
+                return 0;
+        }
+        else
+            return 60 - age;
+//birthDate____________hireDate_____________age60______________NOW
+//birthDate____________age60________________hireDate___________NOW
+//birthDate_________________________________age60/hireDate_____NOW
+//birthDate_________________________________hireDate___________NOW/age60
+    }
+
+    public override string ToString()
+    {
+        return $"{Surname}\t{salary}\t{hireDate}\t{birthDate}";
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        Worker[] workers1 = new Worker[5];
+        workers1[0] = new Worker("vlad", 1000, new DateTime(2012, 05, 20));
+        workers1[1] = new Worker("vlad", 20000, new DateTime(2020, 11, 13));
+        workers1[2] = new Worker("vlad", 5000, new DateTime(2000, 07, 23));
+        workers1[3] = new Worker("vlad", 12000, new DateTime(2021, 01, 12));
+        workers1[4] = new Worker("vlad", 1000, new DateTime(2024, 10, 23));
+
+        WorkerOfEnterprice[] workers2 = new WorkerOfEnterprice[5];
+        workers2[0] = new WorkerOfEnterprice("vlad", 1000, new DateTime(2012, 05, 22), new DateTime(2000, 02, 20));
+        workers2[1] = new WorkerOfEnterprice("vlad", 20000, new DateTime(2000, 01, 23), new DateTime(2002, 03, 10));
+        workers2[2] = new WorkerOfEnterprice("vlad", 5000, new DateTime(2011, 12, 13), new DateTime(2004, 10, 22));
+        workers2[3] = new WorkerOfEnterprice("vlad", 12000, new DateTime(2020, 05, 12), new DateTime(1990, 11, 20));
+        workers2[4] = new WorkerOfEnterprice("vlad", 1000, new DateTime(1999, 10, 23), new DateTime(1960, 07, 24));
+
+        Console.WriteLine("Surname\tsalary\thireDate");
+        for (int i = 0; i < 5; i++)
+            Console.WriteLine(workers1[i].ToString());
+        Console.WriteLine();
+        Console.WriteLine("Surname\tsalary\thireDate\t\tbirthDate");
+        for (int i = 0; i < 5; i++)
+            Console.WriteLine(workers2[i].ToString());
+        Console.WriteLine();
+        Console.WriteLine($"Working Years of workers1[0]: {workers1[0].GetWorkingYears()}");
+        Console.WriteLine();
+        Console.WriteLine($"Working Days of workers1[3]: {workers1[3].GetWorkingDays()}");
+        Console.WriteLine();
+        Console.WriteLine($"Using func Year50 for worker2[2]: {workers2[2].Year60()}");
+    }
+}
